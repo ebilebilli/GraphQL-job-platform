@@ -1,10 +1,13 @@
 import graphene
 from graphene_django.types import DjangoObjectType
 from django.core.exceptions import ValidationError, ObjectDoesNotExist
+
 from jobs.models.job_model import Job
+from .user_schema import UserType
 
 
 class JobType(DjangoObjectType):
+    employer = graphene.Field(UserType) 
     class Meta:
         model = Job
         fields = '__all__'
@@ -26,7 +29,5 @@ class JobQuery(graphene.ObjectType):
             
 
     def resolve_jobs_by_user(self, info, employer_id):
-        try:
-            return Job.objects.filter(employer_id=employer_id)
-        except ObjectDoesNotExist:
-            raise ValidationError({'error': 'Jobs not found for this employer'})
+        return Job.objects.filter(employer_id=employer_id)
+  
