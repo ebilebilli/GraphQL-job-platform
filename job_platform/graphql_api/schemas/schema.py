@@ -1,8 +1,17 @@
 import graphene
-from .job_scheme import JobQuery
+from .job_scheme import JobQuery, CreateJob
 
 
 class Query(JobQuery, graphene.ObjectType):
     pass
 
-schema = graphene.Schema(query=Query)
+
+class JobMutation(graphene.ObjectType):
+    create_job = CreateJob.Field()
+
+
+class Mutation(JobMutation, graphene.ObjectType):
+    pass
+
+
+schema = graphene.Schema(query=Query, mutation=Mutation)

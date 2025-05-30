@@ -27,7 +27,25 @@ class JobQuery(graphene.ObjectType):
         except ObjectDoesNotExist:
             raise ValidationError({'error': 'Jobs not found'})
             
-
     def resolve_jobs_by_user(self, info, employer_id):
         return Job.objects.filter(employer_id=employer_id)
-  
+
+
+class CreateJob(graphene.Mutation):
+    class Arguments:
+        title = graphene.String(required=True)
+        description = graphene.String(required=True)
+    
+    job = graphene.Field(JobType)
+
+    def mutate(self, info ,title, description):
+        user = info.context.user
+        if user.is_anonymous:
+            raise ValidationError({'error': 'Authentication required'})
+
+        job = Job.objects.create(
+            title=title,
+            description=description,
+            employer=user
+        )
+        return CreateJob(job=job)
