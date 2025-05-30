@@ -1,0 +1,1 @@
+from .job_scheme import JobQuery
