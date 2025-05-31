@@ -5,7 +5,8 @@ name = "pypi"
 
 [packages]
 django = "*"
-graphene-django = "*"
+graphene-django = {extras = ["django-jwt"], version = "*"}
+django-graphql-jwt = "*"
 
 [dev-packages]
 

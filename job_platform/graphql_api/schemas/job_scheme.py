@@ -40,10 +40,12 @@ class CreateJob(graphene.Mutation):
     class Arguments:
         title = graphene.String(required=True)
         description = graphene.String(required=True)
+        salaryMin = graphene.Int(required=True)
+        salaryMax = graphene.Int(required=True)
     
     job = graphene.Field(JobType)
 
-    def mutate(self, info, title, description):
+    def mutate(self, info, title, description, salaryMin, salaryMax):
         user = info.context.user
         if user.is_anonymous:
             raise ValidationError({'error': 'Authentication required'})
@@ -51,6 +53,8 @@ class CreateJob(graphene.Mutation):
         job = Job.objects.create(
             title=title,
             description=description,
+            salary_min=salaryMin,
+            salary_max=salaryMax,
             employer=user
         )
         return CreateJob(job=job)
@@ -61,12 +65,12 @@ class UpdateJob(graphene.Mutation):
         id = graphene.ID(required=True)
         title = graphene.String()
         description = graphene.String()
-        salary_min = graphene.Int()
-        salary_max = graphene.Int()
+        salaryMin = graphene.Int()
+        salaryMax = graphene.Int()
 
     job = graphene.Field(JobType)
 
-    def mutate(self, info, id, title=None, description=None, salary_min=None, salary_max=None):
+    def mutate(self, info, id, title=None, description=None, salaryMin=None, salaryMax=None):
         user = info.context.user
         if user.is_anonymous:
             raise ValidationError({'error': 'Authentication required'})
@@ -81,11 +85,11 @@ class UpdateJob(graphene.Mutation):
         if description is not None:
             job.description = description
         
-        if salary_min is not None:
-            job.salary_min = salary_min
+        if salaryMin is not None:
+            job.salary_min = salaryMin
         
-        if salary_max is not None:
-            job.salary_max = salary_max
+        if salaryMax is not None:
+            job.salary_max = salaryMax
         
         job.save()
 
