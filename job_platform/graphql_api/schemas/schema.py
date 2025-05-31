@@ -10,6 +10,7 @@ class Query(JobQuery, graphene.ObjectType):
 class JobMutation(graphene.ObjectType):
     create_job = CreateJob.Field()
     update_job = UpdateJob.Field()
+    delete_job = DeleteJob.Field()
 
 
 class Mutation(JobMutation, graphene.ObjectType):

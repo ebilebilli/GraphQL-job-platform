@@ -7,6 +7,7 @@ from .user_schema import UserType
 
 
 __all__ = ['JobType', 'JobQuery', 'CreateJob', 'UpdateJob',
+           'DeleteJob',
            
 ]
 
@@ -94,3 +95,23 @@ class UpdateJob(graphene.Mutation):
         job.save()
 
         return UpdateJob(job=job)
+
+
+class DeleteJob(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required=True)
+
+    ok = graphene.Boolean()
+
+    def mutate(self, info, id):
+        user = info.context.user
+        if user.is_anonymous:
+            raise ValidationError({'error': 'Authentication required'})
+
+        job = Job.objects.get(id=id)
+        if job.employer != user:
+            raise ValidationError({'error': 'You do not have permission'})
+        
+        job.delete()
+        return (DeleteJob(ok=True))
+        
