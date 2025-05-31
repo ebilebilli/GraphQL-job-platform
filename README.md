@@ -5,8 +5,7 @@
 </div>
 
 > **Note**: This project uses GraphQL, which is considered a legacy technology. While it's still widely used and valuable to learn, it's important to be aware that newer alternatives exist in the API development landscape.
-
-This is a learning project, so the code and structure may evolve as I learn more about GraphQL and its ecosystem. Feel free to explore the codebase and learn along with me
+This project is a personal learning initiative to understand and implement GraphQL in a practical context. It's designed as a job platform where I can experiment with GraphQL concepts, best practices, and real-world implementations.
 
 ## 🎯 Learning Objectives
 
