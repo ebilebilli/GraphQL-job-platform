@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from users.models import CustomerUser
 
 
 User = get_user_model()
@@ -20,8 +21,12 @@ class Job(models.Model):
         (EMPLOYMENT_TEMPORARY, 'Temporary'),
     ]
 
-    employer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='jobs')
-
+    employer = models.ForeignKey(
+        User, 
+        on_delete=models.CASCADE, 
+        related_name='jobs',
+    )
+    
     company = models.CharField(max_length=55)
     title = models.CharField(max_length=55)
     description = models.TextField(max_length=1000)

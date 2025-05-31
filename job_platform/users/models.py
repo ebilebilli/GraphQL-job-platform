@@ -16,14 +16,12 @@ class CustomerUser(AbstractUser):
     phone_number = models.CharField(unique=True)
     birthday = models.DateField()
     gender =  models.CharField(choices=GENDER_CHOOSE_LIST, max_length=5)
+    created_at = models.DateTimeField(auto_now_add=True)
 
     twitter_link = models.URLField(null=True, blank=True, validators=[LinkValidator.validate_twitter_link])
     linkedln_link = models.URLField(null=True, blank=True, validators=[LinkValidator.validate_linkedln_link])
     facebook_link = models.URLField(null=True, blank=True, validators=[LinkValidator.validate_facebook_link])
     youtube_link = models.URLField(null=True, blank=True, validators=[LinkValidator.validate_youtube_link])
-
-    created_at = models.DateTimeField(auto_now_add=True)
-    is_employer = models.BooleanField(default=False)
-
+    
     def __str__(self):
         return self.full_name

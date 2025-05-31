@@ -1,9 +1,10 @@
 import graphql_jwt
 import graphene
 from .job_scheme import *
+from .user_schema import *
 
 
-class Query(JobQuery, graphene.ObjectType):
+class Query(JobQuery, UserQuery, graphene.ObjectType):
     pass
 
 
@@ -13,7 +14,11 @@ class JobMutation(graphene.ObjectType):
     delete_job = DeleteJob.Field()
 
 
-class Mutation(JobMutation, graphene.ObjectType):
+class UserMutation(graphene.ObjectType):
+    user_register = UserRegister.Field()
+
+
+class Mutation(JobMutation, UserMutation, graphene.ObjectType):
     token_auth = graphql_jwt.ObtainJSONWebToken.Field()
     verify_token = graphql_jwt.Verify.Field()
     refresh_token = graphql_jwt.Refresh.Field()

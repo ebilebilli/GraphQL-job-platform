@@ -22,18 +22,18 @@ class JobType(DjangoObjectType):
 class JobQuery(graphene.ObjectType):
     all_jobs = graphene.List(JobType)
     job = graphene.Field(JobType, id=graphene.ID(required=True))
-    jobs_by_user = graphene.List(JobType, employer_id=graphene.ID(required=True) )
+    jobs_by_employer = graphene.List(JobType, employer_id=graphene.ID(required=True) )
 
     def resolve_all_jobs(self, info):
-        return Job.objects.all()
+        return Job.objects.filter(is_active=True)
     
     def resolve_job(self, info, id):
         try:
-            return Job.objects.get(id=id)
+            return Job.objects.get(id=id, is_active=True)
         except ObjectDoesNotExist:
-            raise ValidationError({'error': 'Jobs not found'})
+            raise ValidationError({'error': 'Job not found'})
             
-    def resolve_jobs_by_user(self, info, employer_id):
+    def resolve_jobs_by_employer(self, info, employer_id):
         return Job.objects.filter(employer_id=employer_id)
 
 
