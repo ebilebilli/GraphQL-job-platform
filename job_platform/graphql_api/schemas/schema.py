@@ -1,5 +1,5 @@
 import graphene
-from .job_scheme import JobQuery, CreateJob
+from .job_scheme import *
 
 
 class Query(JobQuery, graphene.ObjectType):
@@ -8,6 +8,7 @@ class Query(JobQuery, graphene.ObjectType):
 
 class JobMutation(graphene.ObjectType):
     create_job = CreateJob.Field()
+    update_job = UpdateJob.Field()
 
 
 class Mutation(JobMutation, graphene.ObjectType):

@@ -6,6 +6,11 @@ from jobs.models.job_model import Job
 from .user_schema import UserType
 
 
+__all__ = ['JobType', 'JobQuery', 'CreateJob', 'UpdateJob',
+           
+]
+
+
 class JobType(DjangoObjectType):
     employer = graphene.Field(UserType) 
     class Meta:
@@ -38,7 +43,7 @@ class CreateJob(graphene.Mutation):
     
     job = graphene.Field(JobType)
 
-    def mutate(self, info ,title, description):
+    def mutate(self, info, title, description):
         user = info.context.user
         if user.is_anonymous:
             raise ValidationError({'error': 'Authentication required'})
@@ -49,3 +54,39 @@ class CreateJob(graphene.Mutation):
             employer=user
         )
         return CreateJob(job=job)
+
+
+class UpdateJob(graphene.Mutation):
+    class Arguments:
+        id = graphene.ID(required=True)
+        title = graphene.String()
+        description = graphene.String()
+        salary_min = graphene.Int()
+        salary_max = graphene.Int()
+
+    job = graphene.Field(JobType)
+
+    def mutate(self, info, id, title=None, description=None, salary_min=None, salary_max=None):
+        user = info.context.user
+        if user.is_anonymous:
+            raise ValidationError({'error': 'Authentication required'})
+        
+        job = Job.objects.get(id=id)
+        if job.employer != user:
+            raise ValidationError({'error': 'You do not have permission'})
+        
+        if title is not None:
+            job.title = title
+
+        if description is not None:
+            job.description = description
+        
+        if salary_min is not None:
+            job.salary_min = salary_min
+        
+        if salary_max is not None:
+            job.salary_max = salary_max
+        
+        job.save()
+
+        return UpdateJob(job=job)
