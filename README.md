@@ -37,7 +37,7 @@ job_platform/
 - Django 5.2.1
 - GraphQL (via graphene-django 3.2.3)
 - JWT Authentication (django-graphql-jwt 0.4.0)
-- SQLite Database
+- Database: PostgreSQL
 
 ### Key Dependencies
 - graphene==3.4.3
@@ -61,5 +61,5 @@ This project serves as a practical learning ground for:
 4. Learning GraphQL security best practices
 5. Understanding the relationship between GraphQL and databases
 
-## 📝 Notes
-
+## 📝PostgreSQL Integration
+The project uses PostgreSQL as its database, providing robust and reliable data storage suitable for handling large datasets. PostgreSQL support ensures smooth operation in both development and production environments
