@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 
-from utils.validators import LinkValidator
+from utils.validators import LinkValidator, phone_validator, validate_birthday
 
 class CustomerUser(AbstractUser):
     MAN = 'Man'
@@ -13,8 +13,8 @@ class CustomerUser(AbstractUser):
 
     full_name = models.CharField(max_length=50)
     email = models.EmailField(unique=True)
-    phone_number = models.CharField(unique=True)
-    birthday = models.DateField()
+    phone_number = models.CharField(unique=True, validators=[phone_validator])
+    birthday = models.DateField(validators=[validate_birthday])
     gender =  models.CharField(choices=GENDER_CHOOSE_LIST, max_length=5)
     created_at = models.DateTimeField(auto_now_add=True)
 
